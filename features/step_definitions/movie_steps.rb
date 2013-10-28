@@ -13,7 +13,6 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  require 'debugger'
   i1 = page.text =~ /.*#{e1}/
   i2 = page.text =~ /.*?#{e2}/
   i1.should < i2
