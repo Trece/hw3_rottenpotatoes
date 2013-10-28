@@ -22,14 +22,31 @@ Background: movies have been added to database
   And  I am on the RottenPotatoes home page
   
 Scenario: restrict to movies with 'PG' or 'R' ratings
+  When I check the following ratings: PG R
   # enter step(s) to check the 'PG' and 'R' checkboxes
+  And I uncheck the following ratings: PG-13 G
   # enter step(s) to uncheck all other checkboxes
+  And I press "Refresh"
   # enter step to "submit" the search form on the homepage
+  Then I should see "The Incredibles"
+  And I should see "The Terminator"
   # enter step(s) to ensure that PG and R movies are visible
+  And I should not see "The Help"
+  And I should not see "Aladdin"
   # enter step(s) to ensure that other movies are not visible
 
 Scenario: no ratings selected
-  # see assignment
+  When  I check the following ratings: R
+  And  I uncheck the following ratings: PG PG-13 G NC-17
+  And  I press "ratings_submit"
+  When I uncheck the following ratings: PG R PG-13 G NC-17
+  And I press "ratings_submit"
+  Then I should not see "The Incredibles"
+  And I should not see "The Help" 
+  And I should not see "Aladdin"
+  And I should see "The Terminator"
 
 Scenario: all ratings selected
-  # see assignment
+  When I check the following ratings: R PG PG-13 G NC-17
+  And I press "Refresh"
+  Then I should see all movies
